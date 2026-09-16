@@ -82,5 +82,7 @@ headless recalculation pass: **244 formulas, zero errors**.
 
 ## Author
 Energy Systems Engineer | Green Hydrogen | AI for Climate Action
+
 Master's in Energy Systems Analysis and Green Hydrogen at WASCAL
+
 koffifidelek59@gmail.com
