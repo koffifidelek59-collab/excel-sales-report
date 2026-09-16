@@ -1,0 +1,209 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{times}
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{graphicx}\usepackage{booktabs}\usepackage{array}
+\usepackage{caption}\usepackage{fancyhdr}\usepackage{parskip}
+\usepackage[hidelinks]{hyperref}\usepackage{float}
+\renewcommand{\topfraction}{0.9}\renewcommand{\bottomfraction}{0.7}
+\renewcommand{\textfraction}{0.08}\renewcommand{\floatpagefraction}{0.75}
+\captionsetup{font=small,labelfont=bf,labelsep=colon,
+              justification=raggedright,singlelinecheck=false}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\footnotesize KOUAME KOFFI FID\`ELE}
+\fancyhead[C]{\footnotesize EXCEL SALES REPORT}
+\fancyhead[R]{\footnotesize Data Analysis Practice}
+\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{0.4pt}
+\newcommand{\F}[1]{\texttt{\small #1}}
+\begin{document}
+
+\begin{titlepage}\centering
+\vspace*{3cm}
+{\large\scshape Data Analysis Practice}\\[2.6cm]
+\rule{\linewidth}{0.5pt}\\[0.8cm]
+{\LARGE\bfseries Excel Sales Report}\\[0.6cm]
+{\large Seven Practical Tasks on a Car-Dealership Sales Log}\\[0.8cm]
+\rule{\linewidth}{0.5pt}\\[1.2cm]
+{\normalsize Formatting $\bullet$ Conditional Formatting $\bullet$ Lookups $\bullet$
+Formulas $\bullet$ Invoicing}\\[3.2cm]
+{\large\itshape Prepared by}\\[0.5cm]
+{\Large\bfseries KOUAME KOFFI FID\`ELE}\\[0.6cm]
+{\large September 14, 2026}
+\vfill\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Overview}
+
+This report documents a single Excel workbook,
+\F{KOUAME\_Koffi\_Fidele\_Excel\_Tasks.xlsx}, built around a 30-order car-sales log
+for May 2019: order date, sales agent, car type, unit price and count. Seven
+independent sheets, one per task, apply a different Excel skill to that same
+underlying data: professional formatting, conditional formatting, target-based
+highlighting with MAX/MIN, summary formulas, a per-salesperson report, a price
+lookup, and a printable invoice.
+
+Every result in the workbook is a live formula, never a typed-in number. Changing a
+price, a count, or the target in cell J3 recalculates every total, every average and
+every highlight automatically. The workbook was validated with a full recalculation
+pass: 244 formulas, zero errors.
+
+\textbf{Conventions used throughout.} A single dark-navy header bar identifies each
+table; column headers state the currency once (EGP) rather than repeating it in every
+cell; dates use a plain \F{dd/mm/yyyy} format; and every sheet is set to print on a
+single landscape page.
+
+\section{Task 1: Formatting}
+
+The raw sales log is turned into a readable table: a merged title bar, a bold header
+row, thousands-separated currency figures, consistent date formatting, borders around
+every cell, light row banding for readability, and a totals row driven by \F{SUM}.
+
+\begin{figure}[tbp]\centering
+\includegraphics[width=0.78\linewidth]{fig1.png}
+\caption{Task 1: the Sales Report after formatting: dates, currency, borders and a
+totals row.}\end{figure}
+
+\section{Task 2: Conditional Formatting}
+
+The highest and lowest Order Amount (the Total Sales column) are identified and
+highlighted automatically, using two formula-based conditional formatting rules
+rather than manual colouring:
+
+\begin{table}[htbp]\centering
+\begin{tabular}{@{}ll@{}}\toprule
+\textbf{Rule} & \textbf{Formula} \\ \midrule
+Highest value, green & \F{=F6=MAX(\$F\$6:\$F\$35)} \\
+Lowest value, red & \F{=F6=MIN(\$F\$6:\$F\$35)} \\
+\bottomrule\end{tabular}\end{table}
+
+Because the rule is formula-based, the highlight follows the data: if any order
+amount changes, the green and red cells move with it.
+
+\begin{figure}[tbp]\centering
+\includegraphics[width=0.76\linewidth]{fig2.png}
+\caption{Task 2: highest Order Amount in green, lowest in red, with a legend.}
+\end{figure}
+
+\section{Task 3: Conditional Formatting Against a Target, with MAX/MIN}
+
+A monthly results table (nine sales people, January to June) is compared against a
+single Target cell, \F{J3 = 1000}. Every result above the target is shaded green,
+every result below it is shaded red, using a \F{CellIsRule} anchored on the absolute
+reference \F{\$J\$3} so the same two rules cover the whole table. The highest and
+lowest results across all nine people and six months are then pulled out with:
+
+\begin{table}[htbp]\centering
+\begin{tabular}{@{}ll@{}}\toprule
+\textbf{Cell} & \textbf{Formula} \\ \midrule
+Lowest Result (J4) & \F{=MIN(B6:G14)} \\
+Highest Result (J5) & \F{=MAX(B6:G14)} \\
+\bottomrule\end{tabular}\end{table}
+
+\begin{figure}[tbp]\centering
+\includegraphics[width=0.94\linewidth]{fig3.png}\\[6pt]
+\includegraphics[width=0.94\linewidth]{fig4.png}
+\caption{Task 3: results above the target in green, below it in red, with the Target,
+Lowest and Highest Result called out on the right.}\end{figure}
+
+\section{Task 4: Summary Formulas}
+
+Four summary figures are calculated directly from the order table, with no manual
+arithmetic:
+
+\begin{table}[htbp]\centering
+\begin{tabular}{@{}lll@{}}\toprule
+\textbf{Item} & \textbf{Formula} & \textbf{Result} \\ \midrule
+Total Sales Amount & \F{=SUM(F6:F35)} & EGP 29,365,000 \\
+Total Sold Cars & \F{=SUM(E6:E35)} & 50 \\
+Count of Orders & \F{=COUNTA(A6:A35)} & 30 \\
+Average Order Amount & \F{=AVERAGE(F6:F35)} & EGP 978,833 \\
+\bottomrule\end{tabular}\end{table}
+
+\begin{figure}[tbp]\centering
+\includegraphics[width=0.72\linewidth]{fig5.png}
+\caption{Task 4: the four summary cells, filled with formulas rather than typed-in
+figures.}\end{figure}
+
+\section{Task 5: Sales Analysis}
+
+A results report is built for each of the six sales agents in the log, using
+\F{COUNTIF}, \F{SUMIF} and \F{AVERAGEIF} against the order table, and the Best Sales
+Person is then identified with \F{INDEX}/\F{MATCH} on the highest Total Sales Amount:
+
+\begin{table}[htbp]\centering\small
+\begin{tabular}{@{}ll@{}}\toprule
+\textbf{Metric} & \textbf{Formula (per agent)} \\ \midrule
+Count of Orders & \F{=COUNTIF(\$B\$6:\$B\$35,A40)} \\
+Total Cars Sold & \F{=SUMIF(\$B\$6:\$B\$35,A40,\$E\$6:\$E\$35)} \\
+Total Sales Amount & \F{=SUMIF(\$B\$6:\$B\$35,A40,\$F\$6:\$F\$35)} \\
+Average Order Amount & \F{=AVERAGEIF(\$B\$6:\$B\$35,A40,\$F\$6:\$F\$35)} \\ \midrule
+Best Sales Person & \F{=INDEX(\$A\$40:\$A\$45,MATCH(MAX(\$D\$40:\$D\$45),\$D\$40:\$D\$45,0))} \\
+\bottomrule\end{tabular}\end{table}
+
+Ahmed leads with EGP 6,940,000 in total sales across 12 cars and 6 orders, ahead of
+Hossam (EGP 6,770,000) despite an equal count of cars sold. The deciding factor is
+the mix of car types sold, not the volume alone.
+
+\begin{figure}[tbp]\centering
+\includegraphics[width=0.92\linewidth]{fig6.png}
+\caption{Task 5: per-salesperson report with the Best Sales Person highlighted and
+called out below.}\end{figure}
+
+\section{Task 6: Lookup and Calculation}
+
+A six-model price table (Toyota, Jeep, Volkswagen, BMW, Kia, Mazda) is used to look
+up the unit price for every order by car type, and the full order amount is then
+calculated as price times count:
+
+\begin{table}[htbp]\centering
+\begin{tabular}{@{}ll@{}}\toprule
+\textbf{Column} & \textbf{Formula} \\ \midrule
+Car Price & \F{=VLOOKUP(C5,\$J\$4:\$K\$9,2,FALSE)} \\
+Total Sales & \F{=D5*E5} \\
+\bottomrule\end{tabular}\end{table}
+
+\section{Task 7: Invoice}
+
+A printable sales invoice is built on the same price-lookup principle as Task 6: the
+person preparing the bill only enters the car type (from a drop-down list) and the
+count; the price and the line total are calculated automatically, and the invoice
+totals sum the full order:
+
+\begin{table}[htbp]\centering
+\begin{tabular}{@{}ll@{}}\toprule
+\textbf{Column} & \textbf{Formula} \\ \midrule
+Car Price & \F{=IF(A5="","",VLOOKUP(A5,\$H\$4:\$I\$9,2,FALSE))} \\
+Total Sales & \F{=IF(A5="","",B5*C5)} \\
+Total Count & \F{=SUM(C5:C15)} \\
+Total Amount & \F{=SUM(D5:D15)} \\
+\bottomrule\end{tabular}\end{table}
+
+\begin{figure}[tbp]\centering
+\includegraphics[width=0.82\linewidth]{fig7.png}
+\caption{Task 7: a sample invoice for a three-car order, built from the same price
+table.}\end{figure}
+
+\section{Method and Validation}
+
+\textbf{Formulas, never hard-coded results.} Every total, average, ranking and lookup
+in the workbook is a live formula. No result was typed in by hand.
+
+\textbf{Conditional formatting, not manual colouring.} The three highlighted ranges
+(Tasks 2, 3 and 5) all use rule-based conditional formatting, so they stay correct if
+the underlying data changes.
+
+\textbf{One consistent style across all seven sheets.} A dark-navy header bar, EGP
+currency stated once per column header, \F{dd/mm/yyyy} dates, thin borders, light row
+banding, and a single font family throughout.
+
+\textbf{Validation.} The workbook was recalculated with a full LibreOffice headless
+pass across all seven sheets: 244 formulas, zero errors.
+
+\vspace{1.4cm}
+\noindent\rule{\linewidth}{0.4pt}\\[4pt]
+{\small KOUAME Koffi Fid\`ele\\ Data Analysis Practice\\ koffifidelek59@gmail.com}
+
+\end{document}
